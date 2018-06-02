@@ -5,7 +5,7 @@
 const path = require('path')
 
 const DOMAIN = {
-  TARGET: 'https://api.flickr.com/'
+  TARGET: 'http://www.weather.com.cn/'
 }
 
 module.exports = {
@@ -15,12 +15,12 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/services': {
+      '/data': {
         target: DOMAIN.TARGET,
         changeOrigin: true,
         secure: false,
         pathRewrite: {
-          '^/services': '/services'
+          '^/data': '/data'
         },
         headers: {
           origin: DOMAIN.TARGET

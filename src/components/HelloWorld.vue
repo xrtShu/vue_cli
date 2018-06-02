@@ -86,6 +86,11 @@
 <script>
 import * as R from 'ramda'
 import $ from 'jquery'
+import axios from 'axios'
+
+const getWeatherInfo = () => {
+  return axios.get('data/cityinfo/101280101.html', {})
+}
 
 export default {
   name: 'HelloWorld',
@@ -94,8 +99,26 @@ export default {
       msg: 'Welcome to Your Vue.js App'
     }
   },
+  methods: {
+    /**
+     * axios await 应用实例
+     */
+    // 方式1：then
+    thenAxios () {
+      getWeatherInfo().then(({ data }) => {
+        console.log(data.weatherinfo) // 天气信息
+      })
+    },
+    // 方式2：await
+    async awaitAxios () {
+      let { data } = await getWeatherInfo()
+      console.log(data.weatherinfo)
+    }
+  },
   mounted () {
+    // 使用jquery
     console.log($)
+
     // R.__ 柯里化函数的参数占位符
     let greet = R.replace('{name}', R.__, 'Hello, {name}!')
     console.log(greet('Alice')) // => 'Hello, Alice!'
@@ -112,7 +135,9 @@ export default {
     let isAll = R.all(equals3)([3, 3])
     console.log(isAll, '♣') // => true
 
-    // ----------- 应用实例 -----------
+    // axios 的使用
+    this.thenAxios()
+    this.awaitAxios()
   }
 }
 </script>
