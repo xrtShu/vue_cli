@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <img src="./assets/images/logo.png">
     <router-view/>
     <!-- loading -->
     <vue-loading :visible="this.$store.state.loading.isLoading"></vue-loading>
