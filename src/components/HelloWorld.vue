@@ -1,102 +1,27 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links - ♣</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
+    <h2>♣ - ^ - ♣</h2>
+    <span @click="complicateInfo" style="cursor: pointer">点我</span>
   </div>
 </template>
 
 <script>
 import * as R from 'ramda'
 import $ from 'jquery'
-import axios from 'axios'
+import http from '../utils/http_client'
 
-const getWeatherInfo = () => {
-  return axios.get('data/cityinfo/101280101.html', {})
+// code 列表：http://www.cnblogs.com/wf225/p/4090737.html
+const getWeatherInfo = (code) => {
+  code = code || '101280101' // 默认广州
+  return http.get(`data/cityinfo/${code}.html`, {})
 }
 
 export default {
   name: 'HelloWorld',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      isLoading: false,
+      weather: []
     }
   },
   methods: {
@@ -104,15 +29,35 @@ export default {
      * axios await 应用实例
      */
     // 方式1：then
-    thenAxios () {
-      getWeatherInfo().then(({ data }) => {
-        console.log(data.weatherinfo) // 天气信息
+    thenAxios (code) {
+      getWeatherInfo(code).then(({ weatherinfo }) => {
+        console.log(weatherinfo) // 天气信息
       })
     },
     // 方式2：await
-    async awaitAxios () {
-      let { data } = await getWeatherInfo()
-      console.log(data.weatherinfo)
+    async awaitAxios (code) {
+      let { weatherinfo } = await getWeatherInfo(code)
+      console.log(weatherinfo)
+    },
+    // 并发：
+    async complicateInfo () {
+      let beiJing = () => {
+        return getWeatherInfo('101010100')
+      }
+      let shangHai = () => {
+        return getWeatherInfo('101020100')
+      }
+      let tianJin = () => {
+        return getWeatherInfo('101030100')
+      }
+      let chongQing = () => {
+        return getWeatherInfo('101040100')
+      }
+      let shenZhen = () => {
+        return getWeatherInfo('101280601')
+      }
+      [...this.weather] = await Promise.all([beiJing(), shangHai(), tianJin(), chongQing(), shenZhen()])
+      console.log(this.weather, 'weather')
     }
   },
   mounted () {
@@ -137,7 +82,7 @@ export default {
 
     // axios 的使用
     this.thenAxios()
-    this.awaitAxios()
+    this.awaitAxios('101281301')
   }
 }
 </script>
