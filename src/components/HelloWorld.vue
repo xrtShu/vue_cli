@@ -77,6 +77,12 @@ export default {
     // axios 的使用
     this.thenAxios()
     this.awaitAxios('101281301')
+
+    // ES6 高级特性
+    let x = 1
+    let y = 2
+    let spread = { a: 3, b: 4 }
+    console.log({ x, y, ...spread }) // {x: 1, y: 2, a: 3, b: 4}
   }
 }
 </script>
