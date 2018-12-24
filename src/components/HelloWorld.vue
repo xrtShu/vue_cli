@@ -84,6 +84,15 @@ export default {
     let y = 2
     let spread = { a: 3, b: 4 }
     console.log({ x, y, ...spread }) // {x: 1, y: 2, a: 3, b: 4}
+
+    // 箭头函数
+    const asyncFun = (paramA) => async (paramB) => {
+      return `this is asyncFun => ${paramA} and ${paramB}`
+    }
+
+    asyncFun(20)(18).then(res => {
+      console.log(res)
+    })
   }
 }
 </script>
